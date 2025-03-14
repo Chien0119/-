@@ -1,0 +1,89 @@
+MainActivity.kt
+package com.example.myapplication
+
+import android.graphics.Color
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import kotlin.random.Random
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val btnRock: Button = findViewById(R.id.btnRock)
+        val btnPaper: Button = findViewById(R.id.btnPaper)
+        val btnScissors: Button = findViewById(R.id.btnScissors)
+        val tvResult: TextView = findViewById(R.id.tvResult)
+
+        val choices = listOf("剪刀", "石頭", "布")
+
+        btnRock.setOnClickListener { playGame("石頭", tvResult, choices) }
+        btnPaper.setOnClickListener { playGame("布", tvResult, choices) }
+        btnScissors.setOnClickListener { playGame("剪刀", tvResult, choices) }
+    }
+
+    private fun playGame(playerChoice: String, tvResult: TextView, choices: List<String>) {
+        val computerChoice = choices[Random.nextInt(choices.size)]
+        val result: String
+        val color: Int
+
+        when {
+            playerChoice == computerChoice -> {
+                result = "平手!"
+                color = Color.GRAY
+            }
+            playerChoice == "剪刀" && computerChoice == "布" ||
+                    playerChoice == "石頭" && computerChoice == "剪刀" ||
+                    playerChoice == "布" && computerChoice == "石頭" -> {
+                result = "你贏了!"
+                color = Color.GREEN
+            }
+            else -> {
+                result = "你輸了!"
+                color = Color.RED
+            }
+        }
+
+        tvResult.text = "你選擇了: $playerChoice\n電腦選擇了: $computerChoice\n$result"
+        tvResult.setTextColor(color)
+    }
+}
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="請選擇剪刀、石頭或布"
+        android:textSize="18sp"
+        android:paddingBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnRock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="石頭" />
+
+
+    <Button
+        android:id="@+id/btnPaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="布" />
+
+    <Button
+        android:id="@+id/btnScissors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剪刀" />
+</LinearLayout>
